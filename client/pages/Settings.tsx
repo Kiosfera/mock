@@ -4,7 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -27,7 +33,7 @@ import {
   Bell,
   Lock,
   User,
-  Database
+  Database,
 } from "lucide-react";
 
 interface Settings {
@@ -102,7 +108,7 @@ export default function Settings() {
   const [hasChanges, setHasChanges] = useState(false);
 
   const updateSetting = (key: keyof Settings, value: any) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
+    setSettings((prev) => ({ ...prev, [key]: value }));
     setHasChanges(true);
   };
 
@@ -136,13 +142,20 @@ export default function Settings() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 font-poppins">Configurações</h1>
-                <p className="text-sm text-gray-600">Personalize suas preferências do sistema</p>
+                <h1 className="text-2xl font-bold text-gray-900 font-poppins">
+                  Configurações
+                </h1>
+                <p className="text-sm text-gray-600">
+                  Personalize suas preferências do sistema
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
               {hasChanges && (
-                <Badge variant="outline" className="text-amber-600 border-amber-200 bg-amber-50">
+                <Badge
+                  variant="outline"
+                  className="text-amber-600 border-amber-200 bg-amber-50"
+                >
                   Alterações não salvas
                 </Badge>
               )}
@@ -190,7 +203,9 @@ export default function Settings() {
                     <div className="mt-2 space-y-2">
                       <Slider
                         value={[settings.defaultQuality]}
-                        onValueChange={(value) => updateSetting('defaultQuality', value[0])}
+                        onValueChange={(value) =>
+                          updateSetting("defaultQuality", value[0])
+                        }
                         max={600}
                         min={72}
                         step={1}
@@ -198,7 +213,9 @@ export default function Settings() {
                       />
                       <div className="flex justify-between text-sm text-gray-600">
                         <span>72 DPI</span>
-                        <span className="font-medium">{settings.defaultQuality} DPI</span>
+                        <span className="font-medium">
+                          {settings.defaultQuality} DPI
+                        </span>
                         <span>600 DPI</span>
                       </div>
                     </div>
@@ -208,7 +225,9 @@ export default function Settings() {
                     <Label htmlFor="format">Formato Padrão</Label>
                     <Select
                       value={settings.defaultFormat}
-                      onValueChange={(value) => updateSetting('defaultFormat', value)}
+                      onValueChange={(value) =>
+                        updateSetting("defaultFormat", value)
+                      }
                     >
                       <SelectTrigger className="mt-2">
                         <SelectValue />
@@ -225,12 +244,16 @@ export default function Settings() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="metadata">Incluir Metadados</Label>
-                      <p className="text-sm text-gray-600">Adicionar informações do projeto no arquivo</p>
+                      <p className="text-sm text-gray-600">
+                        Adicionar informações do projeto no arquivo
+                      </p>
                     </div>
                     <Switch
                       id="metadata"
                       checked={settings.includeMetadata}
-                      onCheckedChange={(checked) => updateSetting('includeMetadata', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("includeMetadata", checked)
+                      }
                     />
                   </div>
                 </CardContent>
@@ -250,7 +273,9 @@ export default function Settings() {
                       <Input
                         id="downloadFolder"
                         value={settings.downloadFolder}
-                        onChange={(e) => updateSetting('downloadFolder', e.target.value)}
+                        onChange={(e) =>
+                          updateSetting("downloadFolder", e.target.value)
+                        }
                         placeholder="/caminho/para/pasta"
                         className="flex-1"
                       />
@@ -262,28 +287,39 @@ export default function Settings() {
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label htmlFor="autoNaming">Nomenclatura Automática</Label>
-                      <p className="text-sm text-gray-600">Gerar nomes automaticamente</p>
+                      <Label htmlFor="autoNaming">
+                        Nomenclatura Automática
+                      </Label>
+                      <p className="text-sm text-gray-600">
+                        Gerar nomes automaticamente
+                      </p>
                     </div>
                     <Switch
                       id="autoNaming"
                       checked={settings.autoNaming}
-                      onCheckedChange={(checked) => updateSetting('autoNaming', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("autoNaming", checked)
+                      }
                     />
                   </div>
 
                   {settings.autoNaming && (
                     <div>
-                      <Label htmlFor="namingPattern">Padrão de Nomenclatura</Label>
+                      <Label htmlFor="namingPattern">
+                        Padrão de Nomenclatura
+                      </Label>
                       <Input
                         id="namingPattern"
                         value={settings.namingPattern}
-                        onChange={(e) => updateSetting('namingPattern', e.target.value)}
+                        onChange={(e) =>
+                          updateSetting("namingPattern", e.target.value)
+                        }
                         placeholder="{projeto}_{numero}_{data}"
                         className="mt-2"
                       />
                       <p className="text-xs text-gray-500 mt-1">
-                        Use: {"{projeto}"}, {"{numero}"}, {"{nome}"}, {"{data}"}, {"{hora}"}
+                        Use: {"{projeto}"}, {"{numero}"}, {"{nome}"}, {"{data}"}
+                        , {"{hora}"}
                       </p>
                     </div>
                   )}
@@ -307,7 +343,7 @@ export default function Settings() {
                     <Label htmlFor="theme">Tema</Label>
                     <Select
                       value={settings.theme}
-                      onValueChange={(value) => updateSetting('theme', value)}
+                      onValueChange={(value) => updateSetting("theme", value)}
                     >
                       <SelectTrigger className="mt-2">
                         <SelectValue />
@@ -324,7 +360,9 @@ export default function Settings() {
                     <Label htmlFor="language">Idioma</Label>
                     <Select
                       value={settings.language}
-                      onValueChange={(value) => updateSetting('language', value)}
+                      onValueChange={(value) =>
+                        updateSetting("language", value)
+                      }
                     >
                       <SelectTrigger className="mt-2">
                         <SelectValue />
@@ -342,7 +380,9 @@ export default function Settings() {
                     <div className="mt-2 space-y-2">
                       <Slider
                         value={[settings.gridSize]}
-                        onValueChange={(value) => updateSetting('gridSize', value[0])}
+                        onValueChange={(value) =>
+                          updateSetting("gridSize", value[0])
+                        }
                         max={50}
                         min={10}
                         step={5}
@@ -350,7 +390,9 @@ export default function Settings() {
                       />
                       <div className="flex justify-between text-sm text-gray-600">
                         <span>10px</span>
-                        <span className="font-medium">{settings.gridSize}px</span>
+                        <span className="font-medium">
+                          {settings.gridSize}px
+                        </span>
                         <span>50px</span>
                       </div>
                     </div>
@@ -369,24 +411,32 @@ export default function Settings() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="autoSave">Salvamento Automático</Label>
-                      <p className="text-sm text-gray-600">Salvar automaticamente a cada mudança</p>
+                      <p className="text-sm text-gray-600">
+                        Salvar automaticamente a cada mudança
+                      </p>
                     </div>
                     <Switch
                       id="autoSave"
                       checked={settings.autoSave}
-                      onCheckedChange={(checked) => updateSetting('autoSave', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("autoSave", checked)
+                      }
                     />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="showPreview">Preview Automático</Label>
-                      <p className="text-sm text-gray-600">Mostrar preview ao editar</p>
+                      <p className="text-sm text-gray-600">
+                        Mostrar preview ao editar
+                      </p>
                     </div>
                     <Switch
                       id="showPreview"
                       checked={settings.showPreview}
-                      onCheckedChange={(checked) => updateSetting('showPreview', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("showPreview", checked)
+                      }
                     />
                   </div>
                 </CardContent>
@@ -407,37 +457,51 @@ export default function Settings() {
                 <CardContent className="space-y-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label htmlFor="autoPosition">Posicionamento Automático</Label>
-                      <p className="text-sm text-gray-600">Posicionar arte automaticamente</p>
+                      <Label htmlFor="autoPosition">
+                        Posicionamento Automático
+                      </Label>
+                      <p className="text-sm text-gray-600">
+                        Posicionar arte automaticamente
+                      </p>
                     </div>
                     <Switch
                       id="autoPosition"
                       checked={settings.autoPosition}
-                      onCheckedChange={(checked) => updateSetting('autoPosition', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("autoPosition", checked)
+                      }
                     />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="snapToGrid">Ajustar à Grade</Label>
-                      <p className="text-sm text-gray-600">Alinhar elementos à grade</p>
+                      <p className="text-sm text-gray-600">
+                        Alinhar elementos à grade
+                      </p>
                     </div>
                     <Switch
                       id="snapToGrid"
                       checked={settings.snapToGrid}
-                      onCheckedChange={(checked) => updateSetting('snapToGrid', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("snapToGrid", checked)
+                      }
                     />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="showGuides">Mostrar Guias</Label>
-                      <p className="text-sm text-gray-600">Exibir linhas guia de alinhamento</p>
+                      <p className="text-sm text-gray-600">
+                        Exibir linhas guia de alinhamento
+                      </p>
                     </div>
                     <Switch
                       id="showGuides"
                       checked={settings.showGuides}
-                      onCheckedChange={(checked) => updateSetting('showGuides', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("showGuides", checked)
+                      }
                     />
                   </div>
                 </CardContent>
@@ -456,7 +520,9 @@ export default function Settings() {
                     <div className="mt-2 space-y-2">
                       <Slider
                         value={[settings.defaultFontSize]}
-                        onValueChange={(value) => updateSetting('defaultFontSize', value[0])}
+                        onValueChange={(value) =>
+                          updateSetting("defaultFontSize", value[0])
+                        }
                         max={48}
                         min={8}
                         step={1}
@@ -464,7 +530,9 @@ export default function Settings() {
                       />
                       <div className="flex justify-between text-sm text-gray-600">
                         <span>8px</span>
-                        <span className="font-medium">{settings.defaultFontSize}px</span>
+                        <span className="font-medium">
+                          {settings.defaultFontSize}px
+                        </span>
                         <span>48px</span>
                       </div>
                     </div>
@@ -474,7 +542,9 @@ export default function Settings() {
                     <Label htmlFor="fontWeight">Peso da Fonte Padrão</Label>
                     <Select
                       value={settings.defaultFontWeight}
-                      onValueChange={(value) => updateSetting('defaultFontWeight', value)}
+                      onValueChange={(value) =>
+                        updateSetting("defaultFontWeight", value)
+                      }
                     >
                       <SelectTrigger className="mt-2">
                         <SelectValue />
@@ -507,22 +577,30 @@ export default function Settings() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="autoBackup">Backup Automático</Label>
-                      <p className="text-sm text-gray-600">Fazer backup automaticamente</p>
+                      <p className="text-sm text-gray-600">
+                        Fazer backup automaticamente
+                      </p>
                     </div>
                     <Switch
                       id="autoBackup"
                       checked={settings.autoBackup}
-                      onCheckedChange={(checked) => updateSetting('autoBackup', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("autoBackup", checked)
+                      }
                     />
                   </div>
 
                   {settings.autoBackup && (
                     <div>
-                      <Label htmlFor="backupInterval">Intervalo de Backup (minutos)</Label>
+                      <Label htmlFor="backupInterval">
+                        Intervalo de Backup (minutos)
+                      </Label>
                       <div className="mt-2 space-y-2">
                         <Slider
                           value={[settings.backupInterval]}
-                          onValueChange={(value) => updateSetting('backupInterval', value[0])}
+                          onValueChange={(value) =>
+                            updateSetting("backupInterval", value[0])
+                          }
                           max={120}
                           min={5}
                           step={5}
@@ -530,7 +608,9 @@ export default function Settings() {
                         />
                         <div className="flex justify-between text-sm text-gray-600">
                           <span>5min</span>
-                          <span className="font-medium">{settings.backupInterval}min</span>
+                          <span className="font-medium">
+                            {settings.backupInterval}min
+                          </span>
                           <span>120min</span>
                         </div>
                       </div>
@@ -550,21 +630,33 @@ export default function Settings() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Label htmlFor="cloudSync">Sincronização na Nuvem</Label>
-                      <p className="text-sm text-gray-600">Sincronizar com serviços em nuvem</p>
+                      <p className="text-sm text-gray-600">
+                        Sincronizar com serviços em nuvem
+                      </p>
                     </div>
                     <Switch
                       id="cloudSync"
                       checked={settings.cloudSync}
-                      onCheckedChange={(checked) => updateSetting('cloudSync', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("cloudSync", checked)
+                      }
                     />
                   </div>
 
                   <div className="space-y-4">
-                    <Button variant="outline" className="w-full" disabled={!settings.cloudSync}>
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      disabled={!settings.cloudSync}
+                    >
                       <Cloud className="w-4 h-4 mr-2" />
                       Configurar Google Drive
                     </Button>
-                    <Button variant="outline" className="w-full" disabled={!settings.cloudSync}>
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      disabled={!settings.cloudSync}
+                    >
                       <Cloud className="w-4 h-4 mr-2" />
                       Configurar Dropbox
                     </Button>
@@ -586,13 +678,19 @@ export default function Settings() {
               <CardContent className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="exportNotifications">Notificações de Exportação</Label>
-                    <p className="text-sm text-gray-600">Avisar quando exportação for concluída</p>
+                    <Label htmlFor="exportNotifications">
+                      Notificações de Exportação
+                    </Label>
+                    <p className="text-sm text-gray-600">
+                      Avisar quando exportação for concluída
+                    </p>
                   </div>
                   <Switch
                     id="exportNotifications"
                     checked={settings.exportNotifications}
-                    onCheckedChange={(checked) => updateSetting('exportNotifications', checked)}
+                    onCheckedChange={(checked) =>
+                      updateSetting("exportNotifications", checked)
+                    }
                   />
                 </div>
 
@@ -600,13 +698,19 @@ export default function Settings() {
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="errorNotifications">Notificações de Erro</Label>
-                    <p className="text-sm text-gray-600">Avisar sobre erros no sistema</p>
+                    <Label htmlFor="errorNotifications">
+                      Notificações de Erro
+                    </Label>
+                    <p className="text-sm text-gray-600">
+                      Avisar sobre erros no sistema
+                    </p>
                   </div>
                   <Switch
                     id="errorNotifications"
                     checked={settings.errorNotifications}
-                    onCheckedChange={(checked) => updateSetting('errorNotifications', checked)}
+                    onCheckedChange={(checked) =>
+                      updateSetting("errorNotifications", checked)
+                    }
                   />
                 </div>
 
@@ -614,13 +718,19 @@ export default function Settings() {
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="updateNotifications">Notificações de Atualização</Label>
-                    <p className="text-sm text-gray-600">Avisar sobre novas versões</p>
+                    <Label htmlFor="updateNotifications">
+                      Notificações de Atualização
+                    </Label>
+                    <p className="text-sm text-gray-600">
+                      Avisar sobre novas versões
+                    </p>
                   </div>
                   <Switch
                     id="updateNotifications"
                     checked={settings.updateNotifications}
-                    onCheckedChange={(checked) => updateSetting('updateNotifications', checked)}
+                    onCheckedChange={(checked) =>
+                      updateSetting("updateNotifications", checked)
+                    }
                   />
                 </div>
               </CardContent>
