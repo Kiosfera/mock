@@ -29,7 +29,10 @@ export default function App() {
             <Route path="/project/:id/edit" element={<CreateProject />} />
             <Route path="/project/:id/apply" element={<ProjectApply />} />
             <Route path="/project/:id/export" element={<ProjectExport />} />
-            <Route path="/project/:id/export-3d" element={<ProjectExport3D />} />
+            <Route
+              path="/project/:id/export-3d"
+              element={<ProjectExport3D />}
+            />
             <Route path="/templates" element={<Templates />} />
             <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
