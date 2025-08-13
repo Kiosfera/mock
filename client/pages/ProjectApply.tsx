@@ -3,20 +3,26 @@ import { Link, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { 
-  ArrowLeft, 
-  Play, 
-  Pause, 
-  Square, 
-  RotateCcw, 
-  ZoomIn, 
-  ZoomOut, 
-  Move, 
+import {
+  ArrowLeft,
+  Play,
+  Pause,
+  Square,
+  RotateCcw,
+  ZoomIn,
+  ZoomOut,
+  Move,
   RotateCw,
   Maximize,
   Minimize,
@@ -25,7 +31,7 @@ import {
   CheckCircle,
   AlertCircle,
   Clock,
-  Shirt
+  Shirt,
 } from "lucide-react";
 
 interface ApplySettings {
@@ -57,9 +63,9 @@ interface ProcessingStatus {
 
 export default function ProjectApply() {
   const { id } = useParams();
-  
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  
+
   const [settings, setSettings] = useState<ApplySettings>({
     autoPosition: true,
     uniformSize: true,
@@ -74,7 +80,7 @@ export default function ProjectApply() {
     numberScale: 100,
     namePosition: "bottom",
     nameScale: 80,
-    batchSize: 5
+    batchSize: 5,
   });
 
   const [processing, setProcessing] = useState<ProcessingStatus>({
@@ -84,7 +90,7 @@ export default function ProjectApply() {
     progress: 0,
     status: "idle",
     completedPieces: [],
-    errorPieces: []
+    errorPieces: [],
   });
 
   const [previewPiece, setPreviewPiece] = useState(1);
@@ -92,18 +98,18 @@ export default function ProjectApply() {
   const [showGuides, setShowGuides] = useState(true);
 
   const updateSetting = (key: keyof ApplySettings, value: any) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
+    setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
   const startProcessing = () => {
-    setProcessing(prev => ({
+    setProcessing((prev) => ({
       ...prev,
       isProcessing: true,
       status: "processing",
       currentPiece: 1,
       progress: 0,
       completedPieces: [],
-      errorPieces: []
+      errorPieces: [],
     }));
 
     // Simular processamento
@@ -111,22 +117,26 @@ export default function ProjectApply() {
     const interval = setInterval(() => {
       if (currentPiece <= processing.totalPieces) {
         const success = Math.random() > 0.1; // 90% de sucesso
-        
-        setProcessing(prev => ({
+
+        setProcessing((prev) => ({
           ...prev,
           currentPiece,
           progress: (currentPiece / prev.totalPieces) * 100,
-          completedPieces: success ? [...prev.completedPieces, currentPiece] : prev.completedPieces,
-          errorPieces: !success ? [...prev.errorPieces, currentPiece] : prev.errorPieces
+          completedPieces: success
+            ? [...prev.completedPieces, currentPiece]
+            : prev.completedPieces,
+          errorPieces: !success
+            ? [...prev.errorPieces, currentPiece]
+            : prev.errorPieces,
         }));
-        
+
         currentPiece++;
       } else {
-        setProcessing(prev => ({
+        setProcessing((prev) => ({
           ...prev,
           isProcessing: false,
           status: "completed",
-          currentPiece: 0
+          currentPiece: 0,
         }));
         clearInterval(interval);
       }
@@ -134,7 +144,7 @@ export default function ProjectApply() {
   };
 
   const pauseProcessing = () => {
-    setProcessing(prev => ({ ...prev, isProcessing: false }));
+    setProcessing((prev) => ({ ...prev, isProcessing: false }));
   };
 
   const stopProcessing = () => {
@@ -145,7 +155,7 @@ export default function ProjectApply() {
       progress: 0,
       status: "idle",
       completedPieces: [],
-      errorPieces: []
+      errorPieces: [],
     });
   };
 
@@ -164,7 +174,7 @@ export default function ProjectApply() {
       numberScale: 100,
       namePosition: "bottom",
       nameScale: 80,
-      batchSize: 5
+      batchSize: 5,
     });
   };
 
@@ -182,8 +192,12 @@ export default function ProjectApply() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 font-poppins">Aplicação Automática</h1>
-                <p className="text-sm text-gray-600">Configure e aplique a arte em todas as peças</p>
+                <h1 className="text-2xl font-bold text-gray-900 font-poppins">
+                  Aplicação Automática
+                </h1>
+                <p className="text-sm text-gray-600">
+                  Configure e aplique a arte em todas as peças
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -211,13 +225,17 @@ export default function ProjectApply() {
             <Card className="border-0 shadow-md">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-poppins">Preview da Aplicação</CardTitle>
+                  <CardTitle className="text-lg font-poppins">
+                    Preview da Aplicação
+                  </CardTitle>
                   <div className="flex items-center space-x-2">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => setShowGrid(!showGrid)}
-                      className={showGrid ? "bg-secondary/10 border-secondary" : ""}
+                      className={
+                        showGrid ? "bg-secondary/10 border-secondary" : ""
+                      }
                     >
                       <Grid3x3 className="w-4 h-4 mr-2" />
                       Grade
@@ -226,7 +244,9 @@ export default function ProjectApply() {
                       variant="outline"
                       size="sm"
                       onClick={() => setShowGuides(!showGuides)}
-                      className={showGuides ? "bg-secondary/10 border-secondary" : ""}
+                      className={
+                        showGuides ? "bg-secondary/10 border-secondary" : ""
+                      }
                     >
                       <Crosshair className="w-4 h-4 mr-2" />
                       Guias
@@ -236,30 +256,32 @@ export default function ProjectApply() {
               </CardHeader>
               <CardContent>
                 <div className="aspect-[4/5] bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg relative overflow-hidden">
-                  <canvas 
+                  <canvas
                     ref={canvasRef}
                     className="w-full h-full"
-                    style={{ 
-                      backgroundImage: showGrid ? 'radial-gradient(circle, #ddd 1px, transparent 1px)' : 'none',
-                      backgroundSize: showGrid ? '20px 20px' : 'auto'
+                    style={{
+                      backgroundImage: showGrid
+                        ? "radial-gradient(circle, #ddd 1px, transparent 1px)"
+                        : "none",
+                      backgroundSize: showGrid ? "20px 20px" : "auto",
                     }}
                   />
-                  
+
                   {/* Simulação de camiseta com arte */}
                   <div className="absolute inset-4 bg-white rounded-lg shadow-sm flex flex-col items-center justify-center">
                     {/* Arte Central */}
-                    <div 
+                    <div
                       className="bg-primary/20 rounded-lg flex items-center justify-center relative"
                       style={{
                         width: `${settings.artScale}%`,
                         height: `${settings.artScale * 0.8}%`,
-                        transform: `rotate(${settings.artRotation}deg) translate(${settings.artOffsetX}px, ${settings.artOffsetY}px)`
+                        transform: `rotate(${settings.artRotation}deg) translate(${settings.artOffsetX}px, ${settings.artOffsetY}px)`,
                       }}
                     >
                       <div className="w-16 h-16 bg-primary/40 rounded-lg flex items-center justify-center">
                         <span className="text-white font-bold">ARTE</span>
                       </div>
-                      
+
                       {showGuides && (
                         <>
                           {/* Guias de centralização */}
@@ -268,27 +290,33 @@ export default function ProjectApply() {
                         </>
                       )}
                     </div>
-                    
+
                     {/* Numeração */}
-                    <div 
+                    <div
                       className={`absolute text-2xl font-bold text-secondary ${
-                        settings.numberPosition === "bottom" ? "bottom-8" :
-                        settings.numberPosition === "top" ? "top-8" :
-                        settings.numberPosition === "left" ? "left-8 top-1/2 transform -translate-y-1/2" :
-                        "right-8 top-1/2 transform -translate-y-1/2"
+                        settings.numberPosition === "bottom"
+                          ? "bottom-8"
+                          : settings.numberPosition === "top"
+                            ? "top-8"
+                            : settings.numberPosition === "left"
+                              ? "left-8 top-1/2 transform -translate-y-1/2"
+                              : "right-8 top-1/2 transform -translate-y-1/2"
                       }`}
                       style={{ fontSize: `${settings.numberScale}%` }}
                     >
-                      {String(previewPiece).padStart(2, '0')}
+                      {String(previewPiece).padStart(2, "0")}
                     </div>
-                    
+
                     {/* Nome */}
-                    <div 
+                    <div
                       className={`absolute text-lg font-medium text-gray-700 ${
-                        settings.namePosition === "bottom" ? "bottom-4" :
-                        settings.namePosition === "top" ? "top-4" :
-                        settings.namePosition === "left" ? "left-4 top-1/2 transform -translate-y-1/2" :
-                        "right-4 top-1/2 transform -translate-y-1/2"
+                        settings.namePosition === "bottom"
+                          ? "bottom-4"
+                          : settings.namePosition === "top"
+                            ? "top-4"
+                            : settings.namePosition === "left"
+                              ? "left-4 top-1/2 transform -translate-y-1/2"
+                              : "right-4 top-1/2 transform -translate-y-1/2"
                       }`}
                       style={{ fontSize: `${settings.nameScale}%` }}
                     >
@@ -299,10 +327,12 @@ export default function ProjectApply() {
 
                 {/* Controles de Navegação */}
                 <div className="flex items-center justify-center space-x-4 mt-4">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
-                    onClick={() => setPreviewPiece(Math.max(1, previewPiece - 1))}
+                    onClick={() =>
+                      setPreviewPiece(Math.max(1, previewPiece - 1))
+                    }
                     disabled={previewPiece <= 1}
                   >
                     Anterior
@@ -310,10 +340,14 @@ export default function ProjectApply() {
                   <span className="text-sm text-gray-600 min-w-[5rem] text-center">
                     {previewPiece} / {processing.totalPieces}
                   </span>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
-                    onClick={() => setPreviewPiece(Math.min(processing.totalPieces, previewPiece + 1))}
+                    onClick={() =>
+                      setPreviewPiece(
+                        Math.min(processing.totalPieces, previewPiece + 1),
+                      )
+                    }
                     disabled={previewPiece >= processing.totalPieces}
                   >
                     Próxima
@@ -327,12 +361,19 @@ export default function ProjectApply() {
               <Card className="border-0 shadow-md">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg font-poppins flex items-center space-x-2">
-                    {processing.status === "processing" && <Clock className="w-5 h-5 text-blue-500" />}
-                    {processing.status === "completed" && <CheckCircle className="w-5 h-5 text-green-500" />}
-                    {processing.status === "error" && <AlertCircle className="w-5 h-5 text-red-500" />}
+                    {processing.status === "processing" && (
+                      <Clock className="w-5 h-5 text-blue-500" />
+                    )}
+                    {processing.status === "completed" && (
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                    )}
+                    {processing.status === "error" && (
+                      <AlertCircle className="w-5 h-5 text-red-500" />
+                    )}
                     <span>
                       {processing.status === "processing" && "Processando..."}
-                      {processing.status === "completed" && "Processamento Concluído"}
+                      {processing.status === "completed" &&
+                        "Processamento Concluído"}
                       {processing.status === "error" && "Erro no Processamento"}
                     </span>
                   </CardTitle>
@@ -348,19 +389,25 @@ export default function ProjectApply() {
 
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div className="text-center p-3 bg-green-50 rounded-lg">
-                      <div className="text-2xl font-bold text-green-600">{processing.completedPieces.length}</div>
+                      <div className="text-2xl font-bold text-green-600">
+                        {processing.completedPieces.length}
+                      </div>
                       <div className="text-green-700">Concluídas</div>
                     </div>
                     <div className="text-center p-3 bg-blue-50 rounded-lg">
                       <div className="text-2xl font-bold text-blue-600">
-                        {processing.isProcessing ? processing.currentPiece : processing.totalPieces}
+                        {processing.isProcessing
+                          ? processing.currentPiece
+                          : processing.totalPieces}
                       </div>
                       <div className="text-blue-700">
                         {processing.isProcessing ? "Atual" : "Total"}
                       </div>
                     </div>
                     <div className="text-center p-3 bg-red-50 rounded-lg">
-                      <div className="text-2xl font-bold text-red-600">{processing.errorPieces.length}</div>
+                      <div className="text-2xl font-bold text-red-600">
+                        {processing.errorPieces.length}
+                      </div>
                       <div className="text-red-700">Erros</div>
                     </div>
                   </div>
@@ -396,10 +443,12 @@ export default function ProjectApply() {
             {/* Controles de Aplicação */}
             <Card className="border-0 shadow-md">
               <CardHeader>
-                <CardTitle className="text-lg font-poppins">Controles</CardTitle>
+                <CardTitle className="text-lg font-poppins">
+                  Controles
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Button 
+                <Button
                   onClick={startProcessing}
                   disabled={processing.isProcessing}
                   className="w-full bg-primary hover:bg-primary/90"
@@ -407,8 +456,8 @@ export default function ProjectApply() {
                   <Play className="w-4 h-4 mr-2" />
                   Iniciar Aplicação
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={resetSettings}
                   className="w-full"
                 >
@@ -428,7 +477,9 @@ export default function ProjectApply() {
                   <Label>Escala ({settings.artScale}%)</Label>
                   <Slider
                     value={[settings.artScale]}
-                    onValueChange={(value) => updateSetting('artScale', value[0])}
+                    onValueChange={(value) =>
+                      updateSetting("artScale", value[0])
+                    }
                     max={150}
                     min={20}
                     step={5}
@@ -440,7 +491,9 @@ export default function ProjectApply() {
                   <Label>Rotação ({settings.artRotation}°)</Label>
                   <Slider
                     value={[settings.artRotation]}
-                    onValueChange={(value) => updateSetting('artRotation', value[0])}
+                    onValueChange={(value) =>
+                      updateSetting("artRotation", value[0])
+                    }
                     max={45}
                     min={-45}
                     step={1}
@@ -452,7 +505,9 @@ export default function ProjectApply() {
                   <Label>Offset Vertical ({settings.artOffsetY}px)</Label>
                   <Slider
                     value={[settings.artOffsetY]}
-                    onValueChange={(value) => updateSetting('artOffsetY', value[0])}
+                    onValueChange={(value) =>
+                      updateSetting("artOffsetY", value[0])
+                    }
                     max={50}
                     min={-50}
                     step={1}
@@ -465,14 +520,18 @@ export default function ProjectApply() {
                     <Label>Centralizar Horizontalmente</Label>
                     <Switch
                       checked={settings.centerHorizontal}
-                      onCheckedChange={(checked) => updateSetting('centerHorizontal', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("centerHorizontal", checked)
+                      }
                     />
                   </div>
                   <div className="flex items-center justify-between">
                     <Label>Manter Proporção</Label>
                     <Switch
                       checked={settings.maintainAspectRatio}
-                      onCheckedChange={(checked) => updateSetting('maintainAspectRatio', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("maintainAspectRatio", checked)
+                      }
                     />
                   </div>
                 </div>
@@ -487,9 +546,11 @@ export default function ProjectApply() {
               <CardContent className="space-y-4">
                 <div>
                   <Label>Posição do Número</Label>
-                  <Select 
-                    value={settings.numberPosition} 
-                    onValueChange={(value: "top" | "bottom" | "left" | "right") => updateSetting('numberPosition', value)}
+                  <Select
+                    value={settings.numberPosition}
+                    onValueChange={(
+                      value: "top" | "bottom" | "left" | "right",
+                    ) => updateSetting("numberPosition", value)}
                   >
                     <SelectTrigger className="mt-2">
                       <SelectValue />
@@ -507,7 +568,9 @@ export default function ProjectApply() {
                   <Label>Tamanho do Número ({settings.numberScale}%)</Label>
                   <Slider
                     value={[settings.numberScale]}
-                    onValueChange={(value) => updateSetting('numberScale', value[0])}
+                    onValueChange={(value) =>
+                      updateSetting("numberScale", value[0])
+                    }
                     max={200}
                     min={50}
                     step={10}
@@ -517,9 +580,11 @@ export default function ProjectApply() {
 
                 <div>
                   <Label>Posição do Nome</Label>
-                  <Select 
-                    value={settings.namePosition} 
-                    onValueChange={(value: "top" | "bottom" | "left" | "right") => updateSetting('namePosition', value)}
+                  <Select
+                    value={settings.namePosition}
+                    onValueChange={(
+                      value: "top" | "bottom" | "left" | "right",
+                    ) => updateSetting("namePosition", value)}
                   >
                     <SelectTrigger className="mt-2">
                       <SelectValue />
@@ -537,7 +602,9 @@ export default function ProjectApply() {
                   <Label>Tamanho do Nome ({settings.nameScale}%)</Label>
                   <Slider
                     value={[settings.nameScale]}
-                    onValueChange={(value) => updateSetting('nameScale', value[0])}
+                    onValueChange={(value) =>
+                      updateSetting("nameScale", value[0])
+                    }
                     max={150}
                     min={50}
                     step={10}
@@ -550,14 +617,18 @@ export default function ProjectApply() {
             {/* Configurações de Processamento */}
             <Card className="border-0 shadow-md">
               <CardHeader>
-                <CardTitle className="text-lg font-poppins">Processamento</CardTitle>
+                <CardTitle className="text-lg font-poppins">
+                  Processamento
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Tamanho do Lote</Label>
-                  <Select 
-                    value={settings.batchSize.toString()} 
-                    onValueChange={(value) => updateSetting('batchSize', parseInt(value))}
+                  <Select
+                    value={settings.batchSize.toString()}
+                    onValueChange={(value) =>
+                      updateSetting("batchSize", parseInt(value))
+                    }
                   >
                     <SelectTrigger className="mt-2">
                       <SelectValue />
@@ -574,11 +645,15 @@ export default function ProjectApply() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Posicionamento Automático</Label>
-                    <p className="text-xs text-gray-600">Usar configurações padrão</p>
+                    <p className="text-xs text-gray-600">
+                      Usar configurações padrão
+                    </p>
                   </div>
                   <Switch
                     checked={settings.autoPosition}
-                    onCheckedChange={(checked) => updateSetting('autoPosition', checked)}
+                    onCheckedChange={(checked) =>
+                      updateSetting("autoPosition", checked)
+                    }
                   />
                 </div>
               </CardContent>
