@@ -18,8 +18,12 @@ export default function Templates() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 font-poppins">Catálogo de Moldes</h1>
-                <p className="text-sm text-gray-600">Visualize e gerencie seus moldes de sublimação</p>
+                <h1 className="text-2xl font-bold text-gray-900 font-poppins">
+                  Catálogo de Moldes
+                </h1>
+                <p className="text-sm text-gray-600">
+                  Visualize e gerencie seus moldes de sublimação
+                </p>
               </div>
             </div>
           </div>
@@ -35,13 +39,18 @@ export default function Templates() {
                 <Package className="w-10 h-10 text-white" />
               </div>
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold text-gray-900 font-poppins">Catálogo de Moldes</h2>
+                <h2 className="text-2xl font-bold text-gray-900 font-poppins">
+                  Catálogo de Moldes
+                </h2>
                 <p className="text-gray-600 max-w-md mx-auto">
-                  Esta página mostrará todos os moldes disponíveis organizados por categoria, com filtros avançados e visualização detalhada.
+                  Esta página mostrará todos os moldes disponíveis organizados
+                  por categoria, com filtros avançados e visualização detalhada.
                 </p>
               </div>
               <div className="space-y-4">
-                <p className="text-sm text-gray-500">Funcionalidades planejadas:</p>
+                <p className="text-sm text-gray-500">
+                  Funcionalidades planejadas:
+                </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 max-w-2xl mx-auto">
                   <div className="flex items-center space-x-2">
                     <Shirt className="w-4 h-4 text-primary" />
