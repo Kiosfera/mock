@@ -4,18 +4,24 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text, Center, Environment } from "@react-three/drei";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { 
-  ArrowLeft, 
-  Download, 
-  Package, 
-  Camera, 
-  Palette, 
+import {
+  ArrowLeft,
+  Download,
+  Package,
+  Camera,
+  Palette,
   RotateCcw,
   Play,
   Pause,
@@ -26,21 +32,21 @@ import {
   Eye,
   RefreshCw,
   CheckCircle,
-  Clock
+  Clock,
 } from "lucide-react";
 
 // Componente 3D da camiseta completa
-function TShirt3DComplete({ 
-  frontArt, 
-  backArt, 
-  sleeveArt, 
-  showNumbers, 
-  showNames, 
+function TShirt3DComplete({
+  frontArt,
+  backArt,
+  sleeveArt,
+  showNumbers,
+  showNames,
   pieceNumber,
   playerName,
   shirtColor,
   lighting,
-  cameraAngle
+  cameraAngle,
 }: {
   frontArt: string;
   backArt?: string;
@@ -54,13 +60,23 @@ function TShirt3DComplete({
   cameraAngle: string;
 }) {
   return (
-    <group rotation={[0, cameraAngle === "front" ? 0 : cameraAngle === "back" ? Math.PI : Math.PI * 0.25, 0]}>
+    <group
+      rotation={[
+        0,
+        cameraAngle === "front"
+          ? 0
+          : cameraAngle === "back"
+            ? Math.PI
+            : Math.PI * 0.25,
+        0,
+      ]}
+    >
       {/* Corpo principal da camiseta */}
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[4, 5, 0.15]} />
         <meshStandardMaterial color={shirtColor} />
       </mesh>
-      
+
       {/* Arte frontal */}
       {cameraAngle !== "back" && (
         <mesh position={[0, 0.5, 0.08]}>
@@ -68,7 +84,7 @@ function TShirt3DComplete({
           <meshStandardMaterial color="#F72585" opacity={0.9} transparent />
         </mesh>
       )}
-      
+
       {/* Arte traseira */}
       {cameraAngle === "back" && backArt && (
         <mesh position={[0, 0.5, -0.08]} rotation={[0, Math.PI, 0]}>
@@ -76,10 +92,16 @@ function TShirt3DComplete({
           <meshStandardMaterial color="#4361EE" opacity={0.9} transparent />
         </mesh>
       )}
-      
+
       {/* Numeração */}
       {showNumbers && (
-        <Center position={[0, cameraAngle === "back" ? 0.5 : -1.5, cameraAngle === "back" ? -0.09 : 0.09]}>
+        <Center
+          position={[
+            0,
+            cameraAngle === "back" ? 0.5 : -1.5,
+            cameraAngle === "back" ? -0.09 : 0.09,
+          ]}
+        >
           <Text
             fontSize={0.4}
             color={cameraAngle === "back" ? "#FFFFFF" : "#4361EE"}
@@ -87,11 +109,11 @@ function TShirt3DComplete({
             anchorY="middle"
             rotation={cameraAngle === "back" ? [0, Math.PI, 0] : [0, 0, 0]}
           >
-            {String(pieceNumber).padStart(2, '0')}
+            {String(pieceNumber).padStart(2, "0")}
           </Text>
         </Center>
       )}
-      
+
       {/* Nome do jogador */}
       {showNames && cameraAngle === "back" && (
         <Center position={[0, -0.5, -0.09]}>
@@ -106,7 +128,7 @@ function TShirt3DComplete({
           </Text>
         </Center>
       )}
-      
+
       {/* Mangas */}
       <mesh position={[-2.8, 1, 0]}>
         <boxGeometry args={[1.2, 2.5, 0.15]} />
@@ -116,7 +138,7 @@ function TShirt3DComplete({
         <boxGeometry args={[1.2, 2.5, 0.15]} />
         <meshStandardMaterial color={shirtColor} />
       </mesh>
-      
+
       {/* Arte nas mangas */}
       {sleeveArt && (
         <>
@@ -169,9 +191,9 @@ interface RenderedImage {
 
 export default function ProjectExport3D() {
   const { id } = useParams();
-  
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  
+
   const [settings, setSettings] = useState<Export3DSettings>({
     resolution: "1080p",
     format: "png",
@@ -183,7 +205,7 @@ export default function ProjectExport3D() {
     showNames: true,
     shirtColor: "#FFFFFF",
     exportType: "single",
-    animationDuration: 5
+    animationDuration: 5,
   });
 
   const [exportStatus, setExportStatus] = useState<ExportStatus>({
@@ -192,7 +214,7 @@ export default function ProjectExport3D() {
     totalRenders: 1,
     progress: 0,
     status: "idle",
-    renderedImages: []
+    renderedImages: [],
   });
 
   const [previewPiece, setPreviewPiece] = useState(1);
@@ -200,46 +222,54 @@ export default function ProjectExport3D() {
 
   const players = Array.from({ length: totalPieces }, (_, i) => ({
     number: i + 1,
-    name: `JOGADOR ${i + 1}`
+    name: `JOGADOR ${i + 1}`,
   }));
 
   const updateSetting = (key: keyof Export3DSettings, value: any) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
+    setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
   const getResolutionInfo = (resolution: string) => {
     switch (resolution) {
-      case "720p": return { width: 1280, height: 720, label: "HD (1280x720)" };
-      case "1080p": return { width: 1920, height: 1080, label: "Full HD (1920x1080)" };
-      case "4k": return { width: 3840, height: 2160, label: "4K (3840x2160)" };
-      default: return { width: 1920, height: 1080, label: "Full HD" };
+      case "720p":
+        return { width: 1280, height: 720, label: "HD (1280x720)" };
+      case "1080p":
+        return { width: 1920, height: 1080, label: "Full HD (1920x1080)" };
+      case "4k":
+        return { width: 3840, height: 2160, label: "4K (3840x2160)" };
+      default:
+        return { width: 1920, height: 1080, label: "Full HD" };
     }
   };
 
   const startExport = () => {
-    const renderCount = settings.exportType === "all" ? totalPieces : 
-                      settings.exportType === "animation" ? 60 : 1; // 60 frames para animação
-    
-    setExportStatus(prev => ({
+    const renderCount =
+      settings.exportType === "all"
+        ? totalPieces
+        : settings.exportType === "animation"
+          ? 60
+          : 1; // 60 frames para animação
+
+    setExportStatus((prev) => ({
       ...prev,
       isExporting: true,
       status: "rendering",
       currentRender: 0,
       totalRenders: renderCount,
       progress: 0,
-      renderedImages: []
+      renderedImages: [],
     }));
 
     // Simular renderização
     let currentRender = 1;
     const interval = setInterval(() => {
       if (currentRender <= renderCount) {
-        setExportStatus(prev => ({
+        setExportStatus((prev) => ({
           ...prev,
           currentRender,
-          progress: (currentRender / renderCount) * 100
+          progress: (currentRender / renderCount) * 100,
         }));
-        
+
         currentRender++;
       } else {
         // Simular imagens renderizadas
@@ -252,7 +282,7 @@ export default function ProjectExport3D() {
             angle: settings.cameraAngle,
             thumbnail: "/placeholder.svg",
             fullSize: "/placeholder.svg",
-            size: "2.5 MB"
+            size: "2.5 MB",
           });
         } else if (settings.exportType === "all") {
           for (let i = 1; i <= totalPieces; i++) {
@@ -263,7 +293,7 @@ export default function ProjectExport3D() {
               angle: settings.cameraAngle,
               thumbnail: "/placeholder.svg",
               fullSize: "/placeholder.svg",
-              size: "2.5 MB"
+              size: "2.5 MB",
             });
           }
         } else {
@@ -274,16 +304,16 @@ export default function ProjectExport3D() {
             angle: "rotating",
             thumbnail: "/placeholder.svg",
             fullSize: "/placeholder.svg",
-            size: "15.8 MB"
+            size: "15.8 MB",
           });
         }
-        
-        setExportStatus(prev => ({
+
+        setExportStatus((prev) => ({
           ...prev,
           isExporting: false,
           status: "completed",
           currentRender: 0,
-          renderedImages: images
+          renderedImages: images,
         }));
         clearInterval(interval);
       }
@@ -291,10 +321,10 @@ export default function ProjectExport3D() {
   };
 
   const cancelExport = () => {
-    setExportStatus(prev => ({
+    setExportStatus((prev) => ({
       ...prev,
       isExporting: false,
-      status: "idle"
+      status: "idle",
     }));
   };
 
@@ -320,14 +350,21 @@ export default function ProjectExport3D() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 font-poppins">Exportação 3D</h1>
-                <p className="text-sm text-gray-600">Gere visualizações 3D realistas para apresentação</p>
+                <h1 className="text-2xl font-bold text-gray-900 font-poppins">
+                  Exportação 3D
+                </h1>
+                <p className="text-sm text-gray-600">
+                  Gere visualizações 3D realistas para apresentação
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
               <Badge variant="outline">
-                {settings.exportType === "single" ? `Peça ${previewPiece}` : 
-                 settings.exportType === "all" ? `${totalPieces} peças` : "Animação"}
+                {settings.exportType === "single"
+                  ? `Peça ${previewPiece}`
+                  : settings.exportType === "all"
+                    ? `${totalPieces} peças`
+                    : "Animação"}
               </Badge>
               <Link to={`/project/${id}/export`}>
                 <Button variant="outline">
@@ -349,29 +386,43 @@ export default function ProjectExport3D() {
             <Card className="border-0 shadow-md">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-poppins">Preview 3D</CardTitle>
+                  <CardTitle className="text-lg font-poppins">
+                    Preview 3D
+                  </CardTitle>
                   <div className="flex items-center space-x-2">
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => updateSetting('cameraAngle', 'front')}
-                      className={settings.cameraAngle === 'front' ? 'bg-primary/10 border-primary' : ''}
+                      onClick={() => updateSetting("cameraAngle", "front")}
+                      className={
+                        settings.cameraAngle === "front"
+                          ? "bg-primary/10 border-primary"
+                          : ""
+                      }
                     >
                       Frente
                     </Button>
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => updateSetting('cameraAngle', 'back')}
-                      className={settings.cameraAngle === 'back' ? 'bg-primary/10 border-primary' : ''}
+                      onClick={() => updateSetting("cameraAngle", "back")}
+                      className={
+                        settings.cameraAngle === "back"
+                          ? "bg-primary/10 border-primary"
+                          : ""
+                      }
                     >
                       Verso
                     </Button>
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => updateSetting('cameraAngle', 'angled')}
-                      className={settings.cameraAngle === 'angled' ? 'bg-primary/10 border-primary' : ''}
+                      onClick={() => updateSetting("cameraAngle", "angled")}
+                      className={
+                        settings.cameraAngle === "angled"
+                          ? "bg-primary/10 border-primary"
+                          : ""
+                      }
                     >
                       Diagonal
                     </Button>
@@ -380,26 +431,41 @@ export default function ProjectExport3D() {
               </CardHeader>
               <CardContent>
                 <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden">
-                  <Canvas camera={{ position: [0, 0, 8], fov: 50 }} style={{ background: settings.backgroundColor }}>
+                  <Canvas
+                    camera={{ position: [0, 0, 8], fov: 50 }}
+                    style={{ background: settings.backgroundColor }}
+                  >
                     <Suspense fallback={null}>
                       {/* Iluminação baseada na configuração */}
                       {settings.lighting === "studio" && (
                         <>
                           <ambientLight intensity={0.4} />
-                          <directionalLight position={[10, 10, 5]} intensity={1} />
-                          <directionalLight position={[-10, -10, -5]} intensity={0.5} />
+                          <directionalLight
+                            position={[10, 10, 5]}
+                            intensity={1}
+                          />
+                          <directionalLight
+                            position={[-10, -10, -5]}
+                            intensity={0.5}
+                          />
                         </>
                       )}
                       {settings.lighting === "soft" && (
                         <>
                           <ambientLight intensity={0.6} />
-                          <directionalLight position={[5, 5, 5]} intensity={0.8} />
+                          <directionalLight
+                            position={[5, 5, 5]}
+                            intensity={0.8}
+                          />
                         </>
                       )}
                       {settings.lighting === "dramatic" && (
                         <>
                           <ambientLight intensity={0.2} />
-                          <directionalLight position={[10, 10, 5]} intensity={1.5} />
+                          <directionalLight
+                            position={[10, 10, 5]}
+                            intensity={1.5}
+                          />
                           <spotLight position={[-10, 10, 5]} intensity={0.8} />
                         </>
                       )}
@@ -409,20 +475,26 @@ export default function ProjectExport3D() {
                           <ambientLight intensity={0.3} />
                         </>
                       )}
-                      
-                      <TShirt3DComplete 
+
+                      <TShirt3DComplete
                         frontArt="/placeholder.svg"
                         backArt="/placeholder.svg"
                         sleeveArt="/placeholder.svg"
                         showNumbers={settings.showNumbers}
                         showNames={settings.showNames}
                         pieceNumber={previewPiece}
-                        playerName={players[previewPiece - 1]?.name || "JOGADOR"}
+                        playerName={
+                          players[previewPiece - 1]?.name || "JOGADOR"
+                        }
                         shirtColor={settings.shirtColor}
                         lighting={settings.lighting}
                         cameraAngle={settings.cameraAngle}
                       />
-                      <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
+                      <OrbitControls
+                        enablePan={true}
+                        enableZoom={true}
+                        enableRotate={true}
+                      />
                     </Suspense>
                   </Canvas>
                 </div>
@@ -430,10 +502,12 @@ export default function ProjectExport3D() {
                 {/* Controles de Navegação */}
                 {settings.exportType !== "animation" && (
                   <div className="flex items-center justify-center space-x-4 mt-4">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
-                      onClick={() => setPreviewPiece(Math.max(1, previewPiece - 1))}
+                      onClick={() =>
+                        setPreviewPiece(Math.max(1, previewPiece - 1))
+                      }
                       disabled={previewPiece <= 1}
                     >
                       Anterior
@@ -441,10 +515,12 @@ export default function ProjectExport3D() {
                     <span className="text-sm text-gray-600 min-w-[5rem] text-center">
                       {previewPiece} / {totalPieces}
                     </span>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
-                      onClick={() => setPreviewPiece(Math.min(totalPieces, previewPiece + 1))}
+                      onClick={() =>
+                        setPreviewPiece(Math.min(totalPieces, previewPiece + 1))
+                      }
                       disabled={previewPiece >= totalPieces}
                     >
                       Próxima
@@ -459,11 +535,16 @@ export default function ProjectExport3D() {
               <Card className="border-0 shadow-md">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg font-poppins flex items-center space-x-2">
-                    {exportStatus.status === "rendering" && <RefreshCw className="w-5 h-5 text-blue-500 animate-spin" />}
-                    {exportStatus.status === "completed" && <CheckCircle className="w-5 h-5 text-green-500" />}
+                    {exportStatus.status === "rendering" && (
+                      <RefreshCw className="w-5 h-5 text-blue-500 animate-spin" />
+                    )}
+                    {exportStatus.status === "completed" && (
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                    )}
                     <span>
                       {exportStatus.status === "rendering" && "Renderizando..."}
-                      {exportStatus.status === "completed" && "Renderização Concluída"}
+                      {exportStatus.status === "completed" &&
+                        "Renderização Concluída"}
                     </span>
                   </CardTitle>
                 </CardHeader>
@@ -474,10 +555,19 @@ export default function ProjectExport3D() {
                         <span>Progresso</span>
                         <span>{Math.round(exportStatus.progress)}%</span>
                       </div>
-                      <Progress value={exportStatus.progress} className="w-full" />
+                      <Progress
+                        value={exportStatus.progress}
+                        className="w-full"
+                      />
                       <div className="flex justify-between text-xs text-gray-500">
-                        <span>Render {exportStatus.currentRender} de {exportStatus.totalRenders}</span>
-                        <span>Resolução: {getResolutionInfo(settings.resolution).label}</span>
+                        <span>
+                          Render {exportStatus.currentRender} de{" "}
+                          {exportStatus.totalRenders}
+                        </span>
+                        <span>
+                          Resolução:{" "}
+                          {getResolutionInfo(settings.resolution).label}
+                        </span>
                       </div>
                     </div>
                   )}
@@ -485,29 +575,38 @@ export default function ProjectExport3D() {
                   {exportStatus.status === "completed" && (
                     <div className="space-y-4">
                       <div className="text-center p-3 bg-green-50 rounded-lg">
-                        <div className="text-lg font-bold text-green-600">{exportStatus.renderedImages.length}</div>
-                        <div className="text-green-700 text-sm">Imagens Renderizadas</div>
+                        <div className="text-lg font-bold text-green-600">
+                          {exportStatus.renderedImages.length}
+                        </div>
+                        <div className="text-green-700 text-sm">
+                          Imagens Renderizadas
+                        </div>
                       </div>
-                      
+
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         {exportStatus.renderedImages.map((image) => (
-                          <Card key={image.id} className="border border-gray-200">
+                          <Card
+                            key={image.id}
+                            className="border border-gray-200"
+                          >
                             <CardContent className="p-3">
                               <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg mb-2 overflow-hidden">
-                                <img 
-                                  src={image.thumbnail} 
+                                <img
+                                  src={image.thumbnail}
                                   alt={image.name}
                                   className="w-full h-full object-cover"
                                 />
                               </div>
                               <div className="space-y-1">
-                                <h3 className="font-medium text-xs truncate">{image.name}</h3>
+                                <h3 className="font-medium text-xs truncate">
+                                  {image.name}
+                                </h3>
                                 <div className="flex items-center justify-between text-xs text-gray-600">
                                   <span>Peça #{image.piece}</span>
                                   <span>{image.size}</span>
                                 </div>
-                                <Button 
-                                  size="sm" 
+                                <Button
+                                  size="sm"
                                   className="w-full h-7 text-xs"
                                   onClick={() => downloadImage(image)}
                                 >
@@ -520,7 +619,7 @@ export default function ProjectExport3D() {
                         ))}
                       </div>
 
-                      <Button 
+                      <Button
                         onClick={downloadAll}
                         className="w-full bg-primary hover:bg-primary/90"
                       >
@@ -531,8 +630,8 @@ export default function ProjectExport3D() {
                   )}
 
                   {exportStatus.isExporting && (
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       onClick={cancelExport}
                       className="w-full"
                     >
@@ -550,14 +649,18 @@ export default function ProjectExport3D() {
             {/* Controles de Renderização */}
             <Card className="border-0 shadow-md">
               <CardHeader>
-                <CardTitle className="text-lg font-poppins">Renderização</CardTitle>
+                <CardTitle className="text-lg font-poppins">
+                  Renderização
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Tipo de Exportação</Label>
-                  <Select 
-                    value={settings.exportType} 
-                    onValueChange={(value: "single" | "all" | "animation") => updateSetting('exportType', value)}
+                  <Select
+                    value={settings.exportType}
+                    onValueChange={(value: "single" | "all" | "animation") =>
+                      updateSetting("exportType", value)
+                    }
                   >
                     <SelectTrigger className="mt-2">
                       <SelectValue />
@@ -572,9 +675,11 @@ export default function ProjectExport3D() {
 
                 <div>
                   <Label>Resolução</Label>
-                  <Select 
-                    value={settings.resolution} 
-                    onValueChange={(value: "720p" | "1080p" | "4k") => updateSetting('resolution', value)}
+                  <Select
+                    value={settings.resolution}
+                    onValueChange={(value: "720p" | "1080p" | "4k") =>
+                      updateSetting("resolution", value)
+                    }
                   >
                     <SelectTrigger className="mt-2">
                       <SelectValue />
@@ -589,9 +694,11 @@ export default function ProjectExport3D() {
 
                 <div>
                   <Label>Formato</Label>
-                  <Select 
-                    value={settings.format} 
-                    onValueChange={(value: "png" | "jpeg" | "webp") => updateSetting('format', value)}
+                  <Select
+                    value={settings.format}
+                    onValueChange={(value: "png" | "jpeg" | "webp") =>
+                      updateSetting("format", value)
+                    }
                   >
                     <SelectTrigger className="mt-2">
                       <SelectValue />
@@ -604,7 +711,7 @@ export default function ProjectExport3D() {
                   </Select>
                 </div>
 
-                <Button 
+                <Button
                   onClick={startExport}
                   disabled={exportStatus.isExporting}
                   className="w-full bg-primary hover:bg-primary/90"
@@ -627,14 +734,18 @@ export default function ProjectExport3D() {
             {/* Configurações Visuais */}
             <Card className="border-0 shadow-md">
               <CardHeader>
-                <CardTitle className="text-lg font-poppins">Aparência</CardTitle>
+                <CardTitle className="text-lg font-poppins">
+                  Aparência
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <Label>Iluminação</Label>
-                  <Select 
-                    value={settings.lighting} 
-                    onValueChange={(value: "studio" | "soft" | "dramatic" | "natural") => updateSetting('lighting', value)}
+                  <Select
+                    value={settings.lighting}
+                    onValueChange={(
+                      value: "studio" | "soft" | "dramatic" | "natural",
+                    ) => updateSetting("lighting", value)}
                   >
                     <SelectTrigger className="mt-2">
                       <SelectValue />
@@ -651,15 +762,19 @@ export default function ProjectExport3D() {
                 <div>
                   <Label>Cor da Camiseta</Label>
                   <div className="flex items-center space-x-2 mt-2">
-                    <div 
+                    <div
                       className="w-8 h-8 border border-gray-300 rounded cursor-pointer"
                       style={{ backgroundColor: settings.shirtColor }}
-                      onClick={() => {/* Implementar color picker */}}
+                      onClick={() => {
+                        /* Implementar color picker */
+                      }}
                     />
                     <Input
                       type="color"
                       value={settings.shirtColor}
-                      onChange={(e) => updateSetting('shirtColor', e.target.value)}
+                      onChange={(e) =>
+                        updateSetting("shirtColor", e.target.value)
+                      }
                       className="w-16 h-8 p-0 border-0"
                     />
                   </div>
@@ -668,15 +783,19 @@ export default function ProjectExport3D() {
                 <div>
                   <Label>Cor do Fundo</Label>
                   <div className="flex items-center space-x-2 mt-2">
-                    <div 
+                    <div
                       className="w-8 h-8 border border-gray-300 rounded cursor-pointer"
                       style={{ backgroundColor: settings.backgroundColor }}
-                      onClick={() => {/* Implementar color picker */}}
+                      onClick={() => {
+                        /* Implementar color picker */
+                      }}
                     />
                     <Input
                       type="color"
                       value={settings.backgroundColor}
-                      onChange={(e) => updateSetting('backgroundColor', e.target.value)}
+                      onChange={(e) =>
+                        updateSetting("backgroundColor", e.target.value)
+                      }
                       className="w-16 h-8 p-0 border-0"
                     />
                   </div>
@@ -687,14 +806,18 @@ export default function ProjectExport3D() {
                     <Label>Mostrar Números</Label>
                     <Switch
                       checked={settings.showNumbers}
-                      onCheckedChange={(checked) => updateSetting('showNumbers', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("showNumbers", checked)
+                      }
                     />
                   </div>
                   <div className="flex items-center justify-between">
                     <Label>Mostrar Nomes</Label>
                     <Switch
                       checked={settings.showNames}
-                      onCheckedChange={(checked) => updateSetting('showNames', checked)}
+                      onCheckedChange={(checked) =>
+                        updateSetting("showNames", checked)
+                      }
                     />
                   </div>
                 </div>
@@ -703,7 +826,9 @@ export default function ProjectExport3D() {
                   <Label>Qualidade ({settings.quality}%)</Label>
                   <Slider
                     value={[settings.quality]}
-                    onValueChange={(value) => updateSetting('quality', value[0])}
+                    onValueChange={(value) =>
+                      updateSetting("quality", value[0])
+                    }
                     max={100}
                     min={70}
                     step={5}
@@ -716,7 +841,9 @@ export default function ProjectExport3D() {
             {/* Informações */}
             <Card className="border-0 shadow-md">
               <CardHeader>
-                <CardTitle className="text-lg font-poppins">Informações</CardTitle>
+                <CardTitle className="text-lg font-poppins">
+                  Informações
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm text-gray-600">
                 <div className="flex justify-between">
@@ -734,15 +861,21 @@ export default function ProjectExport3D() {
                 <div className="flex justify-between">
                   <span>Quantidade:</span>
                   <span>
-                    {settings.exportType === "single" ? "1 imagem" :
-                     settings.exportType === "all" ? `${totalPieces} imagens` : "1 animação"}
+                    {settings.exportType === "single"
+                      ? "1 imagem"
+                      : settings.exportType === "all"
+                        ? `${totalPieces} imagens`
+                        : "1 animação"}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Tempo estimado:</span>
                   <span>
-                    {settings.exportType === "single" ? "~10s" :
-                     settings.exportType === "all" ? `~${totalPieces * 10}s` : "~60s"}
+                    {settings.exportType === "single"
+                      ? "~10s"
+                      : settings.exportType === "all"
+                        ? `~${totalPieces * 10}s`
+                        : "~60s"}
                   </span>
                 </div>
               </CardContent>
