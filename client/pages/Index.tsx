@@ -5,20 +5,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Plus,
-  Search,
-  Filter,
-  FolderOpen,
-  Calendar,
-  Download,
-  Eye,
+import { 
+  Plus, 
+  Search, 
+  Filter, 
+  FolderOpen, 
+  Calendar, 
+  Download, 
+  Eye, 
   Copy,
   Shirt,
   Palette,
   Settings,
   FileImage,
-  Package,
+  Package
 } from "lucide-react";
 
 interface Project {
@@ -48,7 +48,7 @@ export default function Index() {
       hasNames: true,
       createdAt: "2024-01-15",
       lastExported: "2024-01-16",
-      status: "exported",
+      status: "exported"
     },
     {
       id: "2",
@@ -60,7 +60,7 @@ export default function Index() {
       hasNumbers: false,
       hasNames: false,
       createdAt: "2024-01-14",
-      status: "completed",
+      status: "completed"
     },
     {
       id: "3",
@@ -72,44 +72,34 @@ export default function Index() {
       hasNumbers: true,
       hasNames: false,
       createdAt: "2024-01-13",
-      status: "draft",
-    },
+      status: "draft"
+    }
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all");
 
-  const filteredProjects = projects.filter((project) => {
-    const matchesSearch = project.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
+  const filteredProjects = projects.filter(project => {
+    const matchesSearch = project.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesTab = activeTab === "all" || project.status === activeTab;
     return matchesSearch && matchesTab;
   });
 
   const getStatusColor = (status: Project["status"]) => {
     switch (status) {
-      case "draft":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "completed":
-        return "bg-blue-100 text-blue-800 border-blue-200";
-      case "exported":
-        return "bg-green-100 text-green-800 border-green-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+      case "draft": return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "completed": return "bg-blue-100 text-blue-800 border-blue-200";
+      case "exported": return "bg-green-100 text-green-800 border-green-200";
+      default: return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
   const getStatusLabel = (status: Project["status"]) => {
     switch (status) {
-      case "draft":
-        return "Rascunho";
-      case "completed":
-        return "Finalizado";
-      case "exported":
-        return "Exportado";
-      default:
-        return "Desconhecido";
+      case "draft": return "Rascunho";
+      case "completed": return "Finalizado";
+      case "exported": return "Exportado";
+      default: return "Desconhecido";
     }
   };
 
@@ -125,12 +115,8 @@ export default function Index() {
                   <Shirt className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900 font-poppins">
-                    SublimaPro
-                  </h1>
-                  <p className="text-sm text-gray-600">
-                    Gestão de Projetos de Sublimação
-                  </p>
+                  <h1 className="text-2xl font-bold text-gray-900 font-poppins">SublimaPro</h1>
+                  <p className="text-sm text-gray-600">Gestão de Projetos de Sublimação</p>
                 </div>
               </div>
             </div>
@@ -166,12 +152,8 @@ export default function Index() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    Total de Projetos
-                  </p>
-                  <p className="text-3xl font-bold text-gray-900 font-poppins">
-                    {projects.length}
-                  </p>
+                  <p className="text-sm font-medium text-gray-600">Total de Projetos</p>
+                  <p className="text-3xl font-bold text-gray-900 font-poppins">{projects.length}</p>
                 </div>
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                   <FolderOpen className="w-6 h-6 text-primary" />
@@ -184,16 +166,9 @@ export default function Index() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    Finalizados
-                  </p>
+                  <p className="text-sm font-medium text-gray-600">Finalizados</p>
                   <p className="text-3xl font-bold text-gray-900 font-poppins">
-                    {
-                      projects.filter(
-                        (p) =>
-                          p.status === "completed" || p.status === "exported",
-                      ).length
-                    }
+                    {projects.filter(p => p.status === "completed" || p.status === "exported").length}
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -207,14 +182,9 @@ export default function Index() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    Peças Totais
-                  </p>
+                  <p className="text-sm font-medium text-gray-600">Peças Totais</p>
                   <p className="text-3xl font-bold text-gray-900 font-poppins">
-                    {projects.reduce(
-                      (total, project) => total + project.quantity,
-                      0,
-                    )}
+                    {projects.reduce((total, project) => total + project.quantity, 0)}
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-tertiary/20 rounded-lg flex items-center justify-center">
@@ -228,11 +198,9 @@ export default function Index() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    Exportados
-                  </p>
+                  <p className="text-sm font-medium text-gray-600">Exportados</p>
                   <p className="text-3xl font-bold text-gray-900 font-poppins">
-                    {projects.filter((p) => p.status === "exported").length}
+                    {projects.filter(p => p.status === "exported").length}
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center">
@@ -247,9 +215,7 @@ export default function Index() {
         <Card className="border-0 shadow-md">
           <CardHeader className="border-b border-gray-100">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-              <CardTitle className="text-xl font-poppins">
-                Meus Projetos
-              </CardTitle>
+              <CardTitle className="text-xl font-poppins">Meus Projetos</CardTitle>
               <div className="flex items-center space-x-4">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -264,25 +230,12 @@ export default function Index() {
             </div>
           </CardHeader>
           <CardContent className="p-6">
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="w-full"
-            >
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-4 mb-6">
                 <TabsTrigger value="all">Todos ({projects.length})</TabsTrigger>
-                <TabsTrigger value="draft">
-                  Rascunhos (
-                  {projects.filter((p) => p.status === "draft").length})
-                </TabsTrigger>
-                <TabsTrigger value="completed">
-                  Finalizados (
-                  {projects.filter((p) => p.status === "completed").length})
-                </TabsTrigger>
-                <TabsTrigger value="exported">
-                  Exportados (
-                  {projects.filter((p) => p.status === "exported").length})
-                </TabsTrigger>
+                <TabsTrigger value="draft">Rascunhos ({projects.filter(p => p.status === "draft").length})</TabsTrigger>
+                <TabsTrigger value="completed">Finalizados ({projects.filter(p => p.status === "completed").length})</TabsTrigger>
+                <TabsTrigger value="exported">Exportados ({projects.filter(p => p.status === "exported").length})</TabsTrigger>
               </TabsList>
 
               <TabsContent value={activeTab} className="space-y-4">
@@ -291,13 +244,9 @@ export default function Index() {
                     <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <FolderOpen className="w-8 h-8 text-gray-400" />
                     </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      Nenhum projeto encontrado
-                    </h3>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">Nenhum projeto encontrado</h3>
                     <p className="text-gray-600 mb-6">
-                      {searchTerm
-                        ? "Tente ajustar os filtros de busca"
-                        : "Comece criando seu primeiro projeto de sublimação"}
+                      {searchTerm ? "Tente ajustar os filtros de busca" : "Comece criando seu primeiro projeto de sublimação"}
                     </p>
                     <Link to="/create">
                       <Button className="bg-primary hover:bg-primary/90">
@@ -309,14 +258,11 @@ export default function Index() {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredProjects.map((project) => (
-                      <Card
-                        key={project.id}
-                        className="border border-gray-200 hover:shadow-lg transition-shadow duration-200"
-                      >
+                      <Card key={project.id} className="border border-gray-200 hover:shadow-lg transition-shadow duration-200">
                         <CardContent className="p-0">
                           <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 relative rounded-t-lg overflow-hidden">
-                            <img
-                              src={project.artUrl}
+                            <img 
+                              src={project.artUrl} 
                               alt={project.name}
                               className="w-full h-full object-cover"
                             />
@@ -327,9 +273,7 @@ export default function Index() {
                             </div>
                           </div>
                           <div className="p-4">
-                            <h3 className="font-semibold text-gray-900 mb-2 font-poppins">
-                              {project.name}
-                            </h3>
+                            <h3 className="font-semibold text-gray-900 mb-2 font-poppins">{project.name}</h3>
                             <div className="space-y-2 text-sm text-gray-600 mb-4">
                               <div className="flex items-center justify-between">
                                 <span>Tipo: {project.templateType}</span>
@@ -339,46 +283,33 @@ export default function Index() {
                                 <span>Quantidade: {project.quantity}</span>
                                 <div className="flex space-x-1">
                                   {project.hasNumbers && (
-                                    <Badge
-                                      variant="outline"
-                                      className="text-xs"
-                                    >
-                                      Números
-                                    </Badge>
+                                    <Badge variant="outline" className="text-xs">Números</Badge>
                                   )}
                                   {project.hasNames && (
-                                    <Badge
-                                      variant="outline"
-                                      className="text-xs"
-                                    >
-                                      Nomes
-                                    </Badge>
+                                    <Badge variant="outline" className="text-xs">Nomes</Badge>
                                   )}
                                 </div>
                               </div>
                               <div className="text-xs text-gray-500">
-                                Criado em{" "}
-                                {new Date(project.createdAt).toLocaleDateString(
-                                  "pt-BR",
-                                )}
+                                Criado em {new Date(project.createdAt).toLocaleDateString('pt-BR')}
                               </div>
                             </div>
                             <div className="flex items-center space-x-2">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="flex-1"
-                              >
-                                <Eye className="w-4 h-4 mr-2" />
-                                Visualizar
-                              </Button>
+                              <Link to={`/project/${project.id}`} className="flex-1">
+                                <Button size="sm" variant="outline" className="w-full">
+                                  <Eye className="w-4 h-4 mr-2" />
+                                  Visualizar
+                                </Button>
+                              </Link>
                               <Button size="sm" variant="outline">
                                 <Copy className="w-4 h-4" />
                               </Button>
                               {project.status === "exported" && (
-                                <Button size="sm" variant="outline">
-                                  <Download className="w-4 h-4" />
-                                </Button>
+                                <Link to={`/project/${project.id}/export`}>
+                                  <Button size="sm" variant="outline">
+                                    <Download className="w-4 h-4" />
+                                  </Button>
+                                </Link>
                               )}
                             </div>
                           </div>
