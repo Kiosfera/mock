@@ -6,14 +6,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { 
-  ArrowLeft, 
-  Download, 
-  Share, 
-  Copy, 
-  Edit3, 
+import {
+  ArrowLeft,
+  Download,
+  Share,
+  Copy,
+  Edit3,
   Play,
   RotateCcw,
   ZoomIn,
@@ -23,7 +29,7 @@ import {
   Eye,
   Grid3x3,
   Palette,
-  Settings
+  Settings,
 } from "lucide-react";
 
 interface ProjectData {
@@ -43,7 +49,12 @@ interface ProjectData {
 }
 
 // Componente 3D da camiseta
-function TShirt3D({ artTexture, showNumbers, showNames, selectedPiece }: {
+function TShirt3D({
+  artTexture,
+  showNumbers,
+  showNames,
+  selectedPiece,
+}: {
   artTexture: string;
   showNumbers: boolean;
   showNames: boolean;
@@ -56,13 +67,13 @@ function TShirt3D({ artTexture, showNumbers, showNames, selectedPiece }: {
         <boxGeometry args={[4, 5, 0.1]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
-      
+
       {/* Área da arte */}
       <mesh position={[0, 0.5, 0.06]}>
         <planeGeometry args={[2, 2]} />
         <meshStandardMaterial color="#F72585" opacity={0.8} transparent />
       </mesh>
-      
+
       {/* Numeração */}
       {showNumbers && (
         <Center position={[0, -1.5, 0.06]}>
@@ -72,11 +83,11 @@ function TShirt3D({ artTexture, showNumbers, showNames, selectedPiece }: {
             anchorX="center"
             anchorY="middle"
           >
-            {String(selectedPiece).padStart(2, '0')}
+            {String(selectedPiece).padStart(2, "0")}
           </Text>
         </Center>
       )}
-      
+
       {/* Nome */}
       {showNames && (
         <Center position={[0, -2.2, 0.06]}>
@@ -90,7 +101,7 @@ function TShirt3D({ artTexture, showNumbers, showNames, selectedPiece }: {
           </Text>
         </Center>
       )}
-      
+
       {/* Mangas */}
       <mesh position={[-2.5, 1, 0]}>
         <boxGeometry args={[1, 2, 0.1]} />
@@ -106,7 +117,7 @@ function TShirt3D({ artTexture, showNumbers, showNames, selectedPiece }: {
 
 export default function ProjectView() {
   const { id } = useParams();
-  
+
   const [project] = useState<ProjectData>({
     id: id || "1",
     name: "Time Futebol Academia",
@@ -120,7 +131,7 @@ export default function ProjectView() {
     numberEnd: 25,
     namesList: ["JOÃO", "PEDRO", "LUCAS", "MIGUEL", "CARLOS"],
     createdAt: "2024-01-15",
-    status: "completed"
+    status: "completed",
   });
 
   const [selectedPiece, setSelectedPiece] = useState(1);
@@ -131,24 +142,32 @@ export default function ProjectView() {
 
   const pieces = Array.from({ length: project.quantity }, (_, i) => ({
     number: project.numberStart + i,
-    name: project.namesList[i % project.namesList.length] || `JOGADOR ${i + 1}`
+    name: project.namesList[i % project.namesList.length] || `JOGADOR ${i + 1}`,
   }));
 
   const getStatusColor = (status: ProjectData["status"]) => {
     switch (status) {
-      case "draft": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "completed": return "bg-blue-100 text-blue-800 border-blue-200";
-      case "exported": return "bg-green-100 text-green-800 border-green-200";
-      default: return "bg-gray-100 text-gray-800 border-gray-200";
+      case "draft":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "completed":
+        return "bg-blue-100 text-blue-800 border-blue-200";
+      case "exported":
+        return "bg-green-100 text-green-800 border-green-200";
+      default:
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
   const getStatusLabel = (status: ProjectData["status"]) => {
     switch (status) {
-      case "draft": return "Rascunho";
-      case "completed": return "Finalizado";
-      case "exported": return "Exportado";
-      default: return "Desconhecido";
+      case "draft":
+        return "Rascunho";
+      case "completed":
+        return "Finalizado";
+      case "exported":
+        return "Exportado";
+      default:
+        return "Desconhecido";
     }
   };
 
@@ -167,13 +186,16 @@ export default function ProjectView() {
               </Link>
               <div>
                 <div className="flex items-center space-x-3">
-                  <h1 className="text-2xl font-bold text-gray-900 font-poppins">{project.name}</h1>
+                  <h1 className="text-2xl font-bold text-gray-900 font-poppins">
+                    {project.name}
+                  </h1>
                   <Badge className={getStatusColor(project.status)}>
                     {getStatusLabel(project.status)}
                   </Badge>
                 </div>
                 <p className="text-sm text-gray-600">
-                  {project.templateType} • {project.size} • {project.quantity} peças
+                  {project.templateType} • {project.size} • {project.quantity}{" "}
+                  peças
                 </p>
               </div>
             </div>
@@ -212,7 +234,9 @@ export default function ProjectView() {
             <Card className="border-0 shadow-md">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-poppins">Preview da Peça</CardTitle>
+                  <CardTitle className="text-lg font-poppins">
+                    Preview da Peça
+                  </CardTitle>
                   <div className="flex items-center space-x-2">
                     <Button
                       variant={viewMode === "2d" ? "default" : "outline"}
@@ -226,7 +250,11 @@ export default function ProjectView() {
                       variant={viewMode === "3d" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setViewMode("3d")}
-                      className={viewMode === "3d" ? "bg-primary hover:bg-primary/90" : ""}
+                      className={
+                        viewMode === "3d"
+                          ? "bg-primary hover:bg-primary/90"
+                          : ""
+                      }
                     >
                       <Package className="w-4 h-4 mr-2" />
                       3D
@@ -241,39 +269,45 @@ export default function ProjectView() {
                       <Suspense fallback={null}>
                         <ambientLight intensity={0.5} />
                         <pointLight position={[10, 10, 10]} />
-                        <TShirt3D 
+                        <TShirt3D
                           artTexture={project.artUrl}
                           showNumbers={show3DNumbers}
                           showNames={show3DNames}
                           selectedPiece={selectedPiece}
                         />
-                        <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
+                        <OrbitControls
+                          enablePan={true}
+                          enableZoom={true}
+                          enableRotate={true}
+                        />
                       </Suspense>
                     </Canvas>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center relative p-8">
                       <div className="w-full max-w-sm aspect-[3/4] bg-white rounded-lg shadow-lg relative overflow-hidden">
                         {/* Arte */}
-                        <div 
+                        <div
                           className="absolute top-16 left-1/2 transform -translate-x-1/2 w-32 h-32 bg-primary/20 rounded-lg flex items-center justify-center"
-                          style={{ transform: `translateX(-50%) scale(${zoom[0] / 100})` }}
+                          style={{
+                            transform: `translateX(-50%) scale(${zoom[0] / 100})`,
+                          }}
                         >
-                          <img 
-                            src={project.artUrl} 
+                          <img
+                            src={project.artUrl}
                             alt="Arte"
                             className="w-full h-full object-contain"
                           />
                         </div>
-                        
+
                         {/* Numeração */}
                         {project.hasNumbers && (
                           <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2">
                             <span className="text-2xl font-bold text-secondary">
-                              {String(selectedPiece).padStart(2, '0')}
+                              {String(selectedPiece).padStart(2, "0")}
                             </span>
                           </div>
                         )}
-                        
+
                         {/* Nome */}
                         {project.hasNames && (
                           <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
@@ -306,26 +340,32 @@ export default function ProjectView() {
                     <Button variant="outline" size="sm">
                       <ZoomIn className="w-4 h-4" />
                     </Button>
-                    <span className="text-sm text-gray-600 min-w-[3rem]">{zoom[0]}%</span>
+                    <span className="text-sm text-gray-600 min-w-[3rem]">
+                      {zoom[0]}%
+                    </span>
                   </div>
                 )}
 
                 {/* Controles 3D */}
                 {viewMode === "3d" && (
                   <div className="flex items-center justify-center space-x-4 mt-4">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
                       onClick={() => setShow3DNumbers(!show3DNumbers)}
-                      className={show3DNumbers ? "bg-secondary/10 border-secondary" : ""}
+                      className={
+                        show3DNumbers ? "bg-secondary/10 border-secondary" : ""
+                      }
                     >
                       Números
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
                       onClick={() => setShow3DNames(!show3DNames)}
-                      className={show3DNames ? "bg-secondary/10 border-secondary" : ""}
+                      className={
+                        show3DNames ? "bg-secondary/10 border-secondary" : ""
+                      }
                     >
                       Nomes
                     </Button>
@@ -341,20 +381,24 @@ export default function ProjectView() {
             {/* Navegação entre Peças */}
             <Card className="border-0 shadow-md">
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg font-poppins">Navegar entre Peças</CardTitle>
+                <CardTitle className="text-lg font-poppins">
+                  Navegar entre Peças
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-4 mb-4">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
-                    onClick={() => setSelectedPiece(Math.max(1, selectedPiece - 1))}
+                    onClick={() =>
+                      setSelectedPiece(Math.max(1, selectedPiece - 1))
+                    }
                     disabled={selectedPiece <= 1}
                   >
                     Anterior
                   </Button>
-                  <Select 
-                    value={selectedPiece.toString()} 
+                  <Select
+                    value={selectedPiece.toString()}
                     onValueChange={(value) => setSelectedPiece(parseInt(value))}
                   >
                     <SelectTrigger className="w-32">
@@ -368,10 +412,14 @@ export default function ProjectView() {
                       ))}
                     </SelectContent>
                   </Select>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
-                    onClick={() => setSelectedPiece(Math.min(project.quantity, selectedPiece + 1))}
+                    onClick={() =>
+                      setSelectedPiece(
+                        Math.min(project.quantity, selectedPiece + 1),
+                      )
+                    }
                     disabled={selectedPiece >= project.quantity}
                   >
                     Próxima
@@ -383,10 +431,14 @@ export default function ProjectView() {
                   {pieces.map((piece, index) => (
                     <Button
                       key={index}
-                      variant={selectedPiece === index + 1 ? "default" : "outline"}
+                      variant={
+                        selectedPiece === index + 1 ? "default" : "outline"
+                      }
                       size="sm"
                       className={`aspect-square p-0 text-xs ${
-                        selectedPiece === index + 1 ? "bg-primary hover:bg-primary/90" : ""
+                        selectedPiece === index + 1
+                          ? "bg-primary hover:bg-primary/90"
+                          : ""
                       }`}
                       onClick={() => setSelectedPiece(index + 1)}
                     >
@@ -403,13 +455,17 @@ export default function ProjectView() {
             {/* Informações do Projeto */}
             <Card className="border-0 shadow-md">
               <CardHeader>
-                <CardTitle className="text-lg font-poppins">Informações</CardTitle>
+                <CardTitle className="text-lg font-poppins">
+                  Informações
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Molde:</span>
-                    <span className="font-medium capitalize">{project.templateType}</span>
+                    <span className="font-medium capitalize">
+                      {project.templateType}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Tamanho:</span>
@@ -417,24 +473,30 @@ export default function ProjectView() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Quantidade:</span>
-                    <span className="font-medium">{project.quantity} peças</span>
+                    <span className="font-medium">
+                      {project.quantity} peças
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Numeração:</span>
                     <span className="font-medium">
-                      {project.hasNumbers ? `${project.numberStart} - ${project.numberEnd}` : "Não"}
+                      {project.hasNumbers
+                        ? `${project.numberStart} - ${project.numberEnd}`
+                        : "Não"}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Nomes:</span>
                     <span className="font-medium">
-                      {project.hasNames ? `${project.namesList.length} nomes` : "Não"}
+                      {project.hasNames
+                        ? `${project.namesList.length} nomes`
+                        : "Não"}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Criado em:</span>
                     <span className="font-medium">
-                      {new Date(project.createdAt).toLocaleDateString('pt-BR')}
+                      {new Date(project.createdAt).toLocaleDateString("pt-BR")}
                     </span>
                   </div>
                 </div>
@@ -444,7 +506,9 @@ export default function ProjectView() {
             {/* Peça Atual */}
             <Card className="border-0 shadow-md">
               <CardHeader>
-                <CardTitle className="text-lg font-poppins">Peça Atual</CardTitle>
+                <CardTitle className="text-lg font-poppins">
+                  Peça Atual
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
