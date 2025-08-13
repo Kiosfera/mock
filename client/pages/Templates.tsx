@@ -5,8 +5,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   ArrowLeft,
   Package,
@@ -21,7 +33,7 @@ import {
   Upload,
   Star,
   Heart,
-  Edit
+  Edit,
 } from "lucide-react";
 
 interface Template {
@@ -46,11 +58,12 @@ const templates: Template[] = [
     category: "basico",
     sizes: ["P", "M", "G", "GG", "XG", "XXG"],
     preview: "/placeholder.svg",
-    description: "Molde básico para aplicação frontal com área central para arte",
+    description:
+      "Molde básico para aplicação frontal com área central para arte",
     rating: 4.5,
     downloads: 245,
     favorite: true,
-    createdAt: "2024-01-10"
+    createdAt: "2024-01-10",
   },
   {
     id: "t2",
@@ -59,11 +72,12 @@ const templates: Template[] = [
     category: "sport",
     sizes: ["P", "M", "G", "GG", "XG", "XXG"],
     preview: "/placeholder.svg",
-    description: "Molde esportivo com área ampliada para logos e patrocinadores",
+    description:
+      "Molde esportivo com área ampliada para logos e patrocinadores",
     rating: 4.8,
     downloads: 189,
     favorite: false,
-    createdAt: "2024-01-12"
+    createdAt: "2024-01-12",
   },
   {
     id: "t3",
@@ -76,7 +90,7 @@ const templates: Template[] = [
     rating: 4.9,
     downloads: 156,
     favorite: true,
-    createdAt: "2024-01-08"
+    createdAt: "2024-01-08",
   },
   {
     id: "t4",
@@ -89,7 +103,7 @@ const templates: Template[] = [
     rating: 4.3,
     downloads: 203,
     favorite: false,
-    createdAt: "2024-01-09"
+    createdAt: "2024-01-09",
   },
   {
     id: "t5",
@@ -102,7 +116,7 @@ const templates: Template[] = [
     rating: 4.7,
     downloads: 167,
     favorite: true,
-    createdAt: "2024-01-11"
+    createdAt: "2024-01-11",
   },
   {
     id: "t6",
@@ -115,7 +129,7 @@ const templates: Template[] = [
     rating: 4.2,
     downloads: 98,
     favorite: false,
-    createdAt: "2024-01-07"
+    createdAt: "2024-01-07",
   },
   {
     id: "t7",
@@ -128,7 +142,7 @@ const templates: Template[] = [
     rating: 4.4,
     downloads: 134,
     favorite: false,
-    createdAt: "2024-01-13"
+    createdAt: "2024-01-13",
   },
   {
     id: "t8",
@@ -141,8 +155,8 @@ const templates: Template[] = [
     rating: 5.0,
     downloads: 67,
     favorite: true,
-    createdAt: "2024-01-14"
-  }
+    createdAt: "2024-01-14",
+  },
 ];
 
 export default function Templates() {
@@ -151,41 +165,65 @@ export default function Templates() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("rating");
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
+    null,
+  );
 
-  const filteredTemplates = templates.filter(template => {
-    const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         template.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = selectedType === "all" || template.type === selectedType;
-    const matchesCategory = selectedCategory === "all" || template.category === selectedCategory;
-    return matchesSearch && matchesType && matchesCategory;
-  }).sort((a, b) => {
-    switch (sortBy) {
-      case "rating": return b.rating - a.rating;
-      case "downloads": return b.downloads - a.downloads;
-      case "recent": return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      case "name": return a.name.localeCompare(b.name);
-      default: return 0;
-    }
-  });
+  const filteredTemplates = templates
+    .filter((template) => {
+      const matchesSearch =
+        template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        template.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesType =
+        selectedType === "all" || template.type === selectedType;
+      const matchesCategory =
+        selectedCategory === "all" || template.category === selectedCategory;
+      return matchesSearch && matchesType && matchesCategory;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "rating":
+          return b.rating - a.rating;
+        case "downloads":
+          return b.downloads - a.downloads;
+        case "recent":
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        case "name":
+          return a.name.localeCompare(b.name);
+        default:
+          return 0;
+      }
+    });
 
   const getCategoryColor = (category: Template["category"]) => {
     switch (category) {
-      case "basico": return "bg-gray-100 text-gray-800 border-gray-200";
-      case "sport": return "bg-blue-100 text-blue-800 border-blue-200";
-      case "premium": return "bg-purple-100 text-purple-800 border-purple-200";
-      case "custom": return "bg-primary/10 text-primary border-primary/20";
-      default: return "bg-gray-100 text-gray-800 border-gray-200";
+      case "basico":
+        return "bg-gray-100 text-gray-800 border-gray-200";
+      case "sport":
+        return "bg-blue-100 text-blue-800 border-blue-200";
+      case "premium":
+        return "bg-purple-100 text-purple-800 border-purple-200";
+      case "custom":
+        return "bg-primary/10 text-primary border-primary/20";
+      default:
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
   const getCategoryLabel = (category: Template["category"]) => {
     switch (category) {
-      case "basico": return "Básico";
-      case "sport": return "Sport";
-      case "premium": return "Premium";
-      case "custom": return "Personalizado";
-      default: return "Desconhecido";
+      case "basico":
+        return "Básico";
+      case "sport":
+        return "Sport";
+      case "premium":
+        return "Premium";
+      case "custom":
+        return "Personalizado";
+      default:
+        return "Desconhecido";
     }
   };
 
@@ -208,9 +246,13 @@ export default function Templates() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 font-poppins">Catálogo de Moldes</h1>
+                <h1 className="text-2xl font-bold text-gray-900 font-poppins">
+                  Catálogo de Moldes
+                </h1>
                 <p className="text-sm text-gray-600">
-                  {filteredTemplates.length} molde{filteredTemplates.length !== 1 ? 's' : ''} disponível{filteredTemplates.length !== 1 ? 'eis' : ''}
+                  {filteredTemplates.length} molde
+                  {filteredTemplates.length !== 1 ? "s" : ""} disponível
+                  {filteredTemplates.length !== 1 ? "eis" : ""}
                 </p>
               </div>
             </div>
@@ -259,7 +301,10 @@ export default function Templates() {
               </Select>
 
               {/* Filtro por Categoria */}
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Categoria" />
                 </SelectTrigger>
@@ -291,7 +336,9 @@ export default function Templates() {
                   variant={viewMode === "grid" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setViewMode("grid")}
-                  className={viewMode === "grid" ? "bg-primary hover:bg-primary/90" : ""}
+                  className={
+                    viewMode === "grid" ? "bg-primary hover:bg-primary/90" : ""
+                  }
                 >
                   <Grid3x3 className="w-4 h-4" />
                 </Button>
@@ -299,7 +346,9 @@ export default function Templates() {
                   variant={viewMode === "list" ? "default" : "outline"}
                   size="sm"
                   onClick={() => setViewMode("list")}
-                  className={viewMode === "list" ? "bg-primary hover:bg-primary/90" : ""}
+                  className={
+                    viewMode === "list" ? "bg-primary hover:bg-primary/90" : ""
+                  }
                 >
                   <List className="w-4 h-4" />
                 </Button>
@@ -316,15 +365,19 @@ export default function Templates() {
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
                   <Package className="w-8 h-8 text-gray-400" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-900">Nenhum molde encontrado</h3>
+                <h3 className="text-lg font-medium text-gray-900">
+                  Nenhum molde encontrado
+                </h3>
                 <p className="text-gray-600">
                   Tente ajustar os filtros ou buscar por outros termos
                 </p>
-                <Button onClick={() => {
-                  setSearchTerm("");
-                  setSelectedType("all");
-                  setSelectedCategory("all");
-                }}>
+                <Button
+                  onClick={() => {
+                    setSearchTerm("");
+                    setSelectedType("all");
+                    setSelectedCategory("all");
+                  }}
+                >
                   Limpar Filtros
                 </Button>
               </div>
@@ -333,7 +386,10 @@ export default function Templates() {
         ) : viewMode === "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredTemplates.map((template) => (
-              <Card key={template.id} className="border border-gray-200 hover:shadow-lg transition-shadow duration-200">
+              <Card
+                key={template.id}
+                className="border border-gray-200 hover:shadow-lg transition-shadow duration-200"
+              >
                 <CardContent className="p-0">
                   <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 relative rounded-t-lg overflow-hidden">
                     <img
@@ -353,7 +409,9 @@ export default function Templates() {
                         className="w-8 h-8 p-0 bg-white/80 hover:bg-white"
                         onClick={() => toggleFavorite(template.id)}
                       >
-                        <Heart className={`w-4 h-4 ${template.favorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} />
+                        <Heart
+                          className={`w-4 h-4 ${template.favorite ? "fill-red-500 text-red-500" : "text-gray-600"}`}
+                        />
                       </Button>
                     </div>
                     <div className="absolute bottom-3 left-3 right-3 flex space-x-2">
@@ -382,33 +440,51 @@ export default function Templates() {
                             </div>
                             <div className="space-y-4">
                               <div>
-                                <h3 className="text-lg font-semibold mb-2">{template.name}</h3>
-                                <p className="text-gray-600">{template.description}</p>
+                                <h3 className="text-lg font-semibold mb-2">
+                                  {template.name}
+                                </h3>
+                                <p className="text-gray-600">
+                                  {template.description}
+                                </p>
                               </div>
                               <div className="space-y-2">
                                 <div className="flex justify-between">
                                   <span className="text-gray-600">Tipo:</span>
-                                  <span className="capitalize">{template.type}</span>
+                                  <span className="capitalize">
+                                    {template.type}
+                                  </span>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-gray-600">Categoria:</span>
-                                  <Badge className={getCategoryColor(template.category)}>
+                                  <span className="text-gray-600">
+                                    Categoria:
+                                  </span>
+                                  <Badge
+                                    className={getCategoryColor(
+                                      template.category,
+                                    )}
+                                  >
                                     {getCategoryLabel(template.category)}
                                   </Badge>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-gray-600">Avaliação:</span>
+                                  <span className="text-gray-600">
+                                    Avaliação:
+                                  </span>
                                   <div className="flex items-center space-x-1">
                                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                                     <span>{template.rating}</span>
                                   </div>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-gray-600">Downloads:</span>
+                                  <span className="text-gray-600">
+                                    Downloads:
+                                  </span>
                                   <span>{template.downloads}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-gray-600">Tamanhos:</span>
+                                  <span className="text-gray-600">
+                                    Tamanhos:
+                                  </span>
                                   <span>{template.sizes.join(", ")}</span>
                                 </div>
                               </div>
@@ -428,8 +504,12 @@ export default function Templates() {
                     </div>
                   </div>
                   <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 mb-2">{template.name}</h3>
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">{template.description}</p>
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      {template.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                      {template.description}
+                    </p>
                     <div className="flex items-center justify-between text-sm text-gray-500">
                       <div className="flex items-center space-x-1">
                         <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
@@ -453,7 +533,9 @@ export default function Templates() {
                   <div
                     key={template.id}
                     className={`p-4 hover:bg-gray-50 transition-colors ${
-                      index !== filteredTemplates.length - 1 ? 'border-b border-gray-100' : ''
+                      index !== filteredTemplates.length - 1
+                        ? "border-b border-gray-100"
+                        : ""
                     }`}
                   >
                     <div className="flex items-center space-x-4">
@@ -466,15 +548,21 @@ export default function Templates() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center space-x-2 mb-1">
-                          <h3 className="font-semibold text-gray-900">{template.name}</h3>
-                          <Badge className={getCategoryColor(template.category)}>
+                          <h3 className="font-semibold text-gray-900">
+                            {template.name}
+                          </h3>
+                          <Badge
+                            className={getCategoryColor(template.category)}
+                          >
                             {getCategoryLabel(template.category)}
                           </Badge>
                           {template.favorite && (
                             <Heart className="w-4 h-4 fill-red-500 text-red-500" />
                           )}
                         </div>
-                        <p className="text-sm text-gray-600 mb-2">{template.description}</p>
+                        <p className="text-sm text-gray-600 mb-2">
+                          {template.description}
+                        </p>
                         <div className="flex items-center space-x-4 text-sm text-gray-500">
                           <span className="capitalize">{template.type}</span>
                           <div className="flex items-center space-x-1">
@@ -493,7 +581,10 @@ export default function Templates() {
                           <Eye className="w-4 h-4 mr-2" />
                           Preview
                         </Button>
-                        <Button size="sm" className="bg-primary hover:bg-primary/90">
+                        <Button
+                          size="sm"
+                          className="bg-primary hover:bg-primary/90"
+                        >
                           <Download className="w-4 h-4 mr-2" />
                           Usar
                         </Button>
